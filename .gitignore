@@ -1,0 +1,38 @@
+# ==========================
+# Python
+# ==========================
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+
+# Virtual Environments
+**/.venv/
+
+# Environment Variables
+**/.env
+
+# ==========================
+# Node / React
+# ==========================
+**/node_modules/
+
+# Build
+**/dist/
+**/build/
+
+# Logs
+*.log
+
+# ==========================
+# IDE
+# ==========================
+.idea/
+.vscode/
+
+# ==========================
+# Operating System
+# ==========================
+.DS_Store
+Thumbs.db
