@@ -36,3 +36,20 @@
 # ==========================
 .DS_Store
 Thumbs.db
+
+# Alembic
+**/alembic/versions/*.pyc
+
+# Python packaging
+**/*.egg-info/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Environment files
+.env.*
+!.env.example
+
+backend/uploads/
+**/uploads/

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DocuMindAI Streaming Test</title>
+
+    <style>
+        body{
+            font-family: Arial;
+            max-width:900px;
+            margin:40px auto;
+        }
+
+        textarea{
+            width:100%;
+            height:80px;
+            font-size:16px;
+        }
+
+        button{
+            margin-top:15px;
+            padding:10px 20px;
+            font-size:16px;
+        }
+
+        #answer{
+            margin-top:30px;
+            border:1px solid #ccc;
+            padding:20px;
+            min-height:250px;
+            white-space:pre-wrap;
+            font-size:18px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<h1>DocuMindAI Streaming Test</h1>
+
+<textarea id="question"
+placeholder="Ask a question..."></textarea>
+
+<br>
+
+<button onclick="ask()">
+Ask
+</button>
+
+<div id="answer"></div>
+
+<script>
+
+async function ask(){
+
+    const question =
+        document.getElementById("question").value;
+
+    const answer =
+        document.getElementById("answer");
+
+    answer.textContent="";
+
+    const response = await fetch(
+        "http://127.0.0.1:8000/api/v1/chat/stream",
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                question:question
+            })
+        }
+    );
+
+    const reader =
+        response.body.getReader();
+
+    const decoder =
+        new TextDecoder();
+
+    while(true){
+
+        const {done,value} =
+            await reader.read();
+
+        if(done){
+            break;
+        }
+
+        answer.textContent +=
+            decoder.decode(value);
+    }
+
+}
+
+</script>
+
+</body>
+</html>

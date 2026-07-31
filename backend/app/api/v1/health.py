@@ -4,7 +4,7 @@ from fastapi import APIRouter
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter()
+router = APIRouter(tags=["Health"])
 
 
 @router.get("/health", tags=["Health"])

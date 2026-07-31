@@ -8,6 +8,13 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str
 
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "llama3.2:3b"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=True,
@@ -15,3 +22,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+

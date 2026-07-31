@@ -10,7 +10,7 @@ class UserCreate(UserBase):
     password: str
 
 
-class UserRead(UserBase):
+class UserResponse(UserBase):
     id: int
     is_active: bool
 
