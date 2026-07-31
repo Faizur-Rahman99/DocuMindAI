@@ -29,11 +29,7 @@ from app.services.document_processing_service import (
 
 class DocumentService:
     def __init__(self, db: Session):
-
-        self.processing_service = (
-            DocumentProcessingService(db)
-        )
-
+        self.db = db
         self.repository = DocumentRepository(db)
 
     from fastapi import BackgroundTasks
@@ -101,8 +97,10 @@ class DocumentService:
 
         saved_document = self.repository.create(document)
 
+        processing_service = DocumentProcessingService(self.db)
+
         background_tasks.add_task(
-            self.processing_service.process_document,
+            processing_service.process_document,
             saved_document,
             storage_path,
         )

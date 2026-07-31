@@ -44,7 +44,7 @@ class DocumentProcessingService:
 
         self.chunker = TextChunker()
 
-        self.embedding_service = EmbeddingService()
+        self.embedding_service = None
 
         self.embedding_repository = (
             ChunkEmbeddingRepository(db)
@@ -91,13 +91,11 @@ class DocumentProcessingService:
             extracted_text=extracted_text,
         )
 
-    def generate_embeddings(
-            self,
-            chunks: list[str],
-    ):
-        return self.embedding_service.embed_texts(
-            chunks
-        )
+    def generate_embeddings(self, chunks):
+        if self.embedding_service is None:
+            self.embedding_service = EmbeddingService()
+
+        return self.embedding_service.embed_texts(chunks)
 
     def save_embeddings(
             self,
