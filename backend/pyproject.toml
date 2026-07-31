@@ -35,4 +35,6 @@ dependencies = [
     "httpx>=0.28.1",
 
     "structlog>=26.1.0",
+
+    "email-validator>=2.2.0",
 ]
