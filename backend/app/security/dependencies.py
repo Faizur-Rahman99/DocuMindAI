@@ -8,7 +8,7 @@ from app.dependencies.database import get_db
 from app.repositories.user_repository import UserRepository
 
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/api/v1/users/login",
+    tokenUrl="/api/v1/users/token",
 )
 
 

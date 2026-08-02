@@ -11,6 +11,8 @@ from app.schemas.auth import (
 )
 from app.core.exceptions import InvalidCredentialsError
 
+from fastapi.security import OAuth2PasswordRequestForm
+
 router = APIRouter()
 
 
@@ -41,6 +43,28 @@ def login(
         return service.login_user(
             login_data.email,
             login_data.password,
+        )
+
+    except InvalidCredentialsError as e:
+        raise HTTPException(
+            status_code=401,
+            detail=str(e),
+        )
+
+@router.post(
+    "/token",
+    response_model=Token,
+)
+def token(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db),
+):
+    service = UserService(db)
+
+    try:
+        return service.login_user(
+            form_data.username,
+            form_data.password,
         )
 
     except InvalidCredentialsError as e:
