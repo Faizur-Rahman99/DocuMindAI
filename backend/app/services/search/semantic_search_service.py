@@ -13,7 +13,7 @@ from app.repositories.keyword_search_repository import (
 
 class SemanticSearchService:
     def __init__(self, db: Session):
-        self.embedding_service = EmbeddingService()
+        self.embedding_service = None
 
         self.repository = ChunkSearchRepository(db)
 
@@ -27,9 +27,12 @@ class SemanticSearchService:
             limit: int = 5,
             document_id: int | None = None,
     ):
-        query_embedding = (
-            self.embedding_service.embed_text(query)
-        )
+
+        if self.embedding_service is None:
+            self.embedding_service = EmbeddingService()
+
+        query_embedding = self.embedding_service.embed_text(query)
+        
 
         vector_results = (
             self.repository.search(
