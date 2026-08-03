@@ -30,6 +30,10 @@ from app.repositories.chunk_embedding_repository import (
 
 from app.core.enums import DocumentStatus
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class DocumentProcessingService:
     def __init__(self, db: Session):
         self.db = db
@@ -93,7 +97,9 @@ class DocumentProcessingService:
 
     def generate_embeddings(self, chunks):
         if self.embedding_service is None:
+            logger.info("Loading SentenceTransformer model...")
             self.embedding_service = EmbeddingService()
+            logger.info("SentenceTransformer loaded")
 
         return self.embedding_service.embed_texts(chunks)
 
@@ -118,40 +124,56 @@ class DocumentProcessingService:
             storage_path: Path,
     ):
         try:
+            logger.info("Started processing document %s", document.id)
+
             document.status = DocumentStatus.PROCESSING.value
             self.db.commit()
 
+            logger.info("Extracting text...")
             extracted_text = self.extract_text(
                 storage_path
             )
+            logger.info("Text extraction complete")
 
+            logger.info("Saving extracted text...")
             self.save_document_content(
                 document.id,
                 extracted_text,
             )
 
+            logger.info("Chunking document...")
             chunks = self.chunk_text(
                 extracted_text
             )
+            logger.info(f"Created {len(chunks)} chunks")
 
+            logger.info("Saving chunks...")
             saved_chunks = self.save_chunks(
                 document.id,
                 chunks,
             )
 
+            logger.info("Generating embeddings...")
             embeddings = self.generate_embeddings(
                 chunks,
             )
+            logger.info("Embeddings generated")
 
+            logger.info("Saving embeddings...")
             self.save_embeddings(
                 saved_chunks,
                 embeddings,
             )
 
+            logger.info("Marking document READY")
             document.status = DocumentStatus.READY.value
             self.db.commit()
 
+            logger.info(f"Finished processing document {document.id}")
+
         except Exception:
+            logger.exception("Document processing failed")
+
             document.status = DocumentStatus.FAILED.value
             self.db.commit()
             raise
