@@ -11,6 +11,8 @@ import { useConversationMessages } from "../hooks/useConversationMessages";
 
 import { useEffect, useRef } from "react";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 
 interface Props {
     conversationId?: number;
@@ -46,6 +48,8 @@ export default function ChatWindow({
         useRef<HTMLDivElement>(null);
 
     const chatMutation = useChatStream();
+
+    const queryClient = useQueryClient();
 
     const { data: history } =
     useConversationMessages(conversationId);
@@ -167,6 +171,10 @@ export default function ChatWindow({
                 },
 
             );
+
+            await queryClient.invalidateQueries({
+                queryKey: ["conversations"],
+            });
 
         } finally {
 
