@@ -24,9 +24,3 @@ services:
 
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: 60
-
-      - key: OLLAMA_BASE_URL
-        value: http://localhost:11434
-
-      - key: OLLAMA_MODEL
-        value: llama3.2:3b

@@ -10,6 +10,24 @@ export function useDocuments() {
 
         queryFn: getDocuments,
 
+        refetchInterval: (query) => {
+
+            const documents = query.state.data;
+
+            if (!documents) return false;
+
+            const hasProcessingDocuments =
+                documents.some(
+                    (document) =>
+                        document.status === "PROCESSING",
+                );
+
+            return hasProcessingDocuments
+                ? 2000
+                : false;
+
+        },
+
     });
 
 }
