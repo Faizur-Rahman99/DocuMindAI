@@ -9,6 +9,8 @@ import type {
     ReactNode,
 } from "react";
 
+import { queryClient } from "../../../api/queryClient";
+
 interface AuthContextType {
     token: string | null;
     login: (token: string) => void;
@@ -51,8 +53,13 @@ export function AuthProvider({
     }
 
     function logout() {
+
         localStorage.removeItem("token");
+
+        queryClient.clear();
+
         setToken(null);
+
     }
 
     return (

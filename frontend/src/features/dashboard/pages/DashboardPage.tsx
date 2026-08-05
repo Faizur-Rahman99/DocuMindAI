@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
-
 import { useDashboardDocuments } from "../hooks/useDashboardDocuments";
 import { useDashboardConversations } from "../hooks/useDashboardConversations";
+import StatusBadge from "../../../components/StatusBadge";
 
 export default function DashboardPage() {
 
@@ -25,6 +24,11 @@ export default function DashboardPage() {
             (document) => document.status === "PROCESSING",
         ).length;
 
+    const failedCount =
+        documents.filter(
+            (document) => document.status === "FAILED",
+        ).length;
+
     const recentDocuments =
         [...documents].slice(0, 5);
 
@@ -42,167 +46,325 @@ export default function DashboardPage() {
                 </h1>
 
                 <p className="text-gray-500 mt-2">
-                    Manage your AI knowledge base.
+                    Your AI document intelligence workspace.
+                    Upload documents, manage conversations,
+                    and interact with your private knowledge base.
                 </p>
 
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            {/* Statistics */}
 
-                <div className="bg-white rounded-xl shadow border p-6">
+            <div className="grid gap-6 md:grid-cols-3">
 
-                    <h3 className="text-gray-500">
-                        Documents
+                {/* Documents */}
+
+                <div className="bg-white rounded-xl shadow border p-6 h-full">
+
+                    <h3 className="text-gray-500 font-medium">
+                        📄 Documents
                     </h3>
 
                     <p className="text-3xl font-bold mt-4">
+
                         {loadingDocuments
                             ? "..."
                             : documents.length}
+
                     </p>
 
-                    <div className="mt-4 text-sm space-y-1">
+                    <div className="mt-5 space-y-2 text-sm">
 
-                        <p>
-                            ✅ Ready: {readyCount}
-                        </p>
+                        <div className="flex justify-between">
 
-                        <p>
-                            ⏳ Processing: {processingCount}
-                        </p>
+                            <span>
+                                🟢 Ready
+                            </span>
+
+                            <span className="font-semibold">
+
+                                {readyCount}
+
+                            </span>
+
+                        </div>
+
+                        <div className="flex justify-between">
+
+                            <span>
+                                🟡 Processing
+                            </span>
+
+                            <span className="font-semibold">
+
+                                {processingCount}
+
+                            </span>
+
+                        </div>
+
+                        <div className="flex justify-between">
+
+                            <span>
+                                🔴 Failed
+                            </span>
+
+                            <span className="font-semibold">
+
+                                {failedCount}
+
+                            </span>
+
+                        </div>
 
                     </div>
 
                 </div>
 
-                <div className="bg-white rounded-xl shadow border p-6">
+                {/* Conversations */}
 
-                    <h3 className="text-gray-500">
-                        Conversations
+                <div className="bg-white rounded-xl shadow border p-6 h-full">
+
+                    <h3 className="text-gray-500 font-medium">
+                        💬 Conversations
                     </h3>
 
                     <p className="text-3xl font-bold mt-4">
+
                         {loadingConversations
                             ? "..."
                             : conversations.length}
+
+                    </p>
+
+                    <p className="text-sm text-gray-500 mt-5">
+
+                        AI conversations stored securely
+                        in your workspace.
+
                     </p>
 
                 </div>
 
-                <div className="bg-white rounded-xl shadow border p-6">
+                {/* AI */}
 
-                    <h3 className="text-gray-500">
-                        AI Model
+                <div className="bg-white rounded-xl shadow border p-6 h-full">
+
+                    <h3 className="text-gray-500 font-medium">
+                        🤖 AI Assistant
                     </h3>
 
-                    <p className="text-xl font-semibold mt-4">
-                        Llama 3.2
-                    </p>
+                    <div className="mt-4 space-y-3">
 
-                    <p className="text-sm text-gray-500 mt-2">
-                        Hybrid Search Enabled
-                    </p>
+                        <div className="flex justify-between">
+
+                            <span>
+                                Provider
+                            </span>
+
+                            <span className="font-medium">
+
+                                Ollama
+
+                            </span>
+
+                        </div>
+
+                        <div className="flex justify-between">
+
+                            <span>
+                                LLM Model
+                            </span>
+
+                            <span className="font-medium">
+
+                                Llama 3.2
+
+                            </span>
+
+                        </div>
+
+                        <div className="flex justify-between">
+
+                            <span>
+                                Embedding
+                            </span>
+
+                            <span className="font-medium">
+
+                                MiniLM-L6-v2
+
+                            </span>
+
+                        </div>
+
+                        <div className="flex justify-between items-center">
+
+                            <span>
+                                Status
+                            </span>
+
+                            <StatusBadge
+                                status="READY"
+                            />
+
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-6">
+            {/* Recent Activity */}
+
+            <div className="grid gap-6 lg:grid-cols-2">
+
+                {/* Documents */}
 
                 <div className="bg-white rounded-xl shadow border p-6">
 
-                    <h2 className="text-xl font-semibold mb-4">
+                    <h2 className="text-xl font-semibold mb-5">
+
                         Recent Documents
+
                     </h2>
 
-                    <div className="space-y-3">
+                    {recentDocuments.length === 0 ? (
 
-                        {recentDocuments.length === 0 && (
-                            <p className="text-gray-500">
-                                No documents uploaded.
-                            </p>
-                        )}
+                        <div className="py-12 text-center text-gray-500">
 
-                        {recentDocuments.map((document) => (
+                            <div className="text-5xl mb-4">
 
-                            <div
-                                key={document.id}
-                                className="flex justify-between items-center"
-                            >
-
-                                <span>
-                                    📄 {document.original_filename}
-                                </span>
-
-                                <span
-                                    className={
-                                        document.status === "READY"
-                                            ? "text-green-600 text-sm font-medium"
-                                            : "text-yellow-600 text-sm font-medium"
-                                    }
-                                >
-                                    {document.status}
-                                </span>
+                                📂
 
                             </div>
 
-                        ))}
+                            <p className="font-medium">
 
-                    </div>
+                                No documents uploaded yet
+
+                            </p>
+
+                            <p className="text-sm mt-2">
+
+                                Upload your first document
+                                to build your AI knowledge base.
+
+                            </p>
+
+                        </div>
+
+                    ) : (
+
+                        <div className="space-y-4">
+
+                            {recentDocuments.map((document) => (
+
+                                <div
+                                    key={document.id}
+                                    className="flex justify-between items-center border-b pb-3"
+                                >
+
+                                    <div>
+
+                                        <p className="font-medium">
+
+                                            {document.original_filename}
+
+                                        </p>
+
+                                        <p className="text-sm text-gray-500">
+
+                                            Uploaded{" "}
+                                            {new Date(
+                                                document.created_at,
+                                            ).toLocaleDateString()}
+
+                                        </p>
+
+                                    </div>
+
+                                    <StatusBadge
+                                        status={document.status}
+                                    />
+
+                                </div>
+
+                            ))}
+
+                        </div>
+
+                    )}
 
                 </div>
+
+                {/* Conversations */}
 
                 <div className="bg-white rounded-xl shadow border p-6">
 
-                    <h2 className="text-xl font-semibold mb-4">
+                    <h2 className="text-xl font-semibold mb-5">
+
                         Recent Conversations
+
                     </h2>
 
-                    <div className="space-y-3">
+                    {recentConversations.length === 0 ? (
 
-                        {recentConversations.length === 0 && (
-                            <p className="text-gray-500">
-                                No conversations yet.
-                            </p>
-                        )}
+                        <div className="py-12 text-center text-gray-500">
 
-                        {recentConversations.map((conversation) => (
+                            <div className="text-5xl mb-4">
 
-                            <div
-                                key={conversation.id}
-                            >
-                                💬 {conversation.title}
+                                💬
+
                             </div>
 
-                        ))}
+                            <p className="font-medium">
 
-                    </div>
+                                No conversations yet
 
-                </div>
+                            </p>
 
-            </div>
+                            <p className="text-sm mt-2">
 
-            <div className="bg-white rounded-xl shadow border p-6">
+                                Start chatting with your documents.
 
-                <h2 className="text-xl font-semibold mb-6">
-                    Quick Actions
-                </h2>
+                            </p>
 
-                <div className="flex gap-4">
+                        </div>
 
-                    <Link
-                        to="/documents"
-                        className="rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700 transition"
-                    >
-                        Upload Document
-                    </Link>
+                    ) : (
 
-                    <Link
-                        to="/chat"
-                        className="rounded-lg border px-5 py-3 hover:bg-gray-50 transition"
-                    >
-                        New Chat
-                    </Link>
+                        <div className="space-y-4">
+
+                            {recentConversations.map((conversation) => (
+
+                                <div
+                                    key={conversation.id}
+                                    className="border-b pb-3"
+                                >
+
+                                    <p className="font-medium">
+
+                                        {conversation.title}
+
+                                    </p>
+
+                                    <p className="text-sm text-gray-500">
+
+                                        {new Date(
+                                            conversation.created_at,
+                                        ).toLocaleDateString()}
+
+                                    </p>
+
+                                </div>
+
+                            ))}
+
+                        </div>
+
+                    )}
 
                 </div>
 

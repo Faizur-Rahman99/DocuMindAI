@@ -39,7 +39,7 @@ export default function LoginPage() {
 
             login(response.access_token);
 
-            toast.success("Welcome back!");
+            toast.success("Welcome back 👋");
 
             navigate("/dashboard");
 
@@ -63,45 +63,106 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-100">
+        <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-blue-100 flex items-center justify-center px-4">
 
             <form
                 onSubmit={handleSubmit}
-                className="bg-white rounded-xl shadow-lg p-8 w-96 space-y-5"
+                className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 p-10"
             >
 
-                <h1 className="text-3xl font-bold text-center">
-                    DocuMindAI
-                </h1>
+                <div className="text-center mb-8">
 
-                <input
-                    className="w-full border rounded-lg p-3"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) =>
-                        setEmail(e.target.value)
-                    }
-                />
+                    <div className="text-5xl mb-4">
+                        🤖
+                    </div>
 
-                <input
-                    type="password"
-                    className="w-full border rounded-lg p-3"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) =>
-                        setPassword(e.target.value)
-                    }
-                />
-                
+                    <h1 className="text-4xl font-bold text-slate-900">
+                        DocuMindAI
+                    </h1>
 
-                <button
-                    className="bg-blue-600 text-white w-full rounded-lg p-3 hover:bg-blue-700"
-                    disabled={loading}
-                >
-                    {loading
-                        ? "Logging in..."
-                        : "Login"}
-                </button>
+                    <p className="mt-3 text-slate-500 text-sm leading-relaxed">
+                        AI-powered document intelligence platform.
+                        Upload documents, search knowledge,
+                        and chat with your private AI assistant.
+                    </p>
+
+                </div>
+
+                <div className="space-y-5">
+
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="
+                            w-full
+                            rounded-xl
+                            border
+                            border-slate-300
+                            px-4
+                            py-3
+                            outline-none
+                            transition
+                            focus:border-blue-500
+                            focus:ring-4
+                            focus:ring-blue-100
+                        "
+                    />
+
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="
+                            w-full
+                            rounded-xl
+                            border
+                            border-slate-300
+                            px-4
+                            py-3
+                            outline-none
+                            transition
+                            focus:border-blue-500
+                            focus:ring-4
+                            focus:ring-blue-100
+                        "
+                    />
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="
+                            w-full
+                            rounded-xl
+                            bg-blue-600
+                            py-3
+                            font-semibold
+                            text-white
+                            transition
+                            hover:bg-blue-700
+                            hover:shadow-lg
+                            disabled:bg-slate-300
+                            disabled:cursor-not-allowed
+                        "
+                    >
+                        {loading ? "Logging in..." : "Login"}
+                    </button>
+
+                </div>
+
+                <div className="mt-8 border-t pt-5 text-center">
+
+                    <p className="text-xs text-slate-500">
+                        Powered by
+                    </p>
+
+                    <p className="mt-1 text-sm font-medium text-slate-700">
+                        FastAPI • React • PostgreSQL • pgvector • Ollama
+                    </p>
+
+                </div>
 
             </form>
 
